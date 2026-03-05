@@ -7,7 +7,19 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 from fredapi import Fred
+st.sidebar.title("Macroeconomic Dashboard")
 
+model_choice = st.sidebar.selectbox(
+    "Choose a Model",
+    [
+        "Consumption-Savings Model",
+        "Robinson Crusoe Model",
+        "Labor Supply Model",
+        "Monetary Policy Model",
+        "Okun's Law Model",
+        "Consumption vs Income Model"
+    ]
+)
 fred = Fred(api_key="34f96e5bb448b23ea70f0f56e771a6a9")
 st.header("FRED Economic Data")
 
@@ -276,3 +288,61 @@ elif model_choice == "Model 3: Endogenous Labor":
     Labor supply responds to wage shocks. When wages rise, households supply more labor.
     Average labor supply in the simulation is {np.mean(labor):.2f}.
     """)
+if model_choice == "Consumption-Savings Model":
+
+    st.title("Consumption-Savings Model")
+
+elif model_choice == "Monetary Policy Model":
+
+    st.title("Inflation vs Interest Rate")
+
+    inflation = fred.get_series("CPIAUCSL")
+    rates = fred.get_series("FEDFUNDS")
+
+    df = pd.concat([inflation, rates], axis=1)
+    df.columns = ["Inflation", "Interest Rate"]
+    df = df.dropna()
+
+    fig = px.scatter(df, x="Inflation", y="Interest Rate")
+
+    st.plotly_chart(fig)
+
+
+elif model_choice == "Robinson Crusoe Model":
+
+    st.title("Robinson Crusoe Economy")
+
+elif model_choice == "Okun's Law Model":
+
+    st.title("Okun's Law")
+
+    gdp = fred.get_series("GDP")
+    unemployment = fred.get_series("UNRATE")
+
+    df = pd.concat([gdp, unemployment], axis=1)
+    df.columns = ["GDP", "Unemployment"]
+    df = df.dropna()
+
+    fig = px.scatter(df, x="GDP", y="Unemployment", trendline="ols")
+
+    st.plotly_chart(fig)
+
+
+elif model_choice == "Labor Supply Model":
+
+    st.title("Endogenous Labor Supply Model")
+
+elif model_choice == "Consumption vs Income Model":
+
+    st.title("Consumption vs Income")
+
+    consumption = fred.get_series("PCE")
+    income = fred.get_series("DSPIC96")
+
+    df = pd.concat([consumption, income], axis=1)
+    df.columns = ["Consumption", "Income"]
+    df = df.dropna()
+
+    fig = px.scatter(df, x="Income", y="Consumption", trendline="ols")
+
+    st.plotly_chart(fig)
