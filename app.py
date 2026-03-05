@@ -2,6 +2,28 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+from fredapi import Fred
+
+fred = Fred(api_key="34f96e5bb448b23ea70f0f56e771a6a9")
+st.header("FRED Economic Data")
+
+series = st.selectbox(
+    "Select an economic indicator",
+    ["GDP", "UNRATE", "CPIAUCSL", "FEDFUNDS"]
+)
+
+data = fred.get_series(series)
+
+df = data.reset_index()
+df.columns = ["Date", "Value"]
+
+fig = px.line(df, x="Date", y="Value", title=series)
+
+st.plotly_chart(fig)
 
 st.set_page_config(page_title="Macroeconomic Dashboard", layout="wide")
 
