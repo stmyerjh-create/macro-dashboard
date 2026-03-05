@@ -8,29 +8,29 @@ import numpy as np
 import plotly.express as px
 from fredapi import Fred
 st.sidebar.title("Macroeconomic Dashboard")
-habit = st.sidebar.slider("Habit Persistence (h)", 0.0, 0.9, 0.4)
-adj_cost = st.sidebar.slider("Capital Adjustment Cost", 0.0, 5.0, 1.5)
-tfp_vol = st.sidebar.slider("TFP Shock Volatility", 0.01, 0.5, 0.1)
-rho = st.sidebar.slider("Shock Persistence (ρ)", 0.0, 0.99, 0.85)
-g_shock = st.sidebar.slider("Government Spending Shock", 0.0, 5.0, 1.0)
-tax_rate = st.sidebar.slider("Income Tax Rate", 0.0, 0.5, 0.2)
-pi_target = st.sidebar.slider("Inflation Target", 0.0, 5.0, 2.0)
-phi_pi = st.sidebar.slider("Policy Response to Inflation (φπ)", 0.5, 3.0, 1.5)
-st.sidebar.header("Advanced Macroeconomic Parameters")
+alpha = st.sidebar.slider(
+    "Capital Share (α)",
+    0.1, 0.9, 0.33,
+    key="alpha_slider"
+)
 
-habit = st.sidebar.slider("Habit Persistence", 0.0, 0.9, 0.4)
+beta = st.sidebar.slider(
+    "Discount Factor (β)",
+    0.8, 0.999, 0.96,
+    key="beta_slider"
+)
 
-rho = st.sidebar.slider("Shock Persistence", 0.0, 0.99, 0.85)
+adj_cost = st.sidebar.slider(
+    "Capital Adjustment Cost",
+    0.0, 5.0, 1.5,
+    key="adj_cost_slider"
+)
 
-tfp_vol = st.sidebar.slider("TFP Volatility", 0.01, 0.5, 0.1)
-
-adj_cost = st.sidebar.slider("Capital Adjustment Cost", 0.0, 5.0, 1.5)
-
-tax_rate = st.sidebar.slider("Income Tax Rate", 0.0, 0.5, 0.2)
-
-pi_target = st.sidebar.slider("Inflation Target", 0.0, 5.0, 2.0)
-
-phi_pi = st.sidebar.slider("Monetary Policy Response", 0.5, 3.0, 1.5)
+inflation_target = st.sidebar.slider(
+    "Inflation Target (%)",
+    0.0, 5.0, 2.0,
+    key="inflation_target_slider"
+)
 model_choice = st.sidebar.selectbox(
     "Choose a Model",
     [
